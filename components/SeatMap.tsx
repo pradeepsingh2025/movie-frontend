@@ -16,10 +16,10 @@ export default function SeatMap({
       {seats.map(seat => (
         <button
           key={seat.id}
-          disabled={seat.status === 'RESERVED'}
+          disabled={seat.status === 'Inactive'}
           onClick={() => toggle(seat.id)}
           className={`p-2 border
-            ${seat.status === 'RESERVED' ? 'bg-gray-400' : ''}
+            ${seat.status === 'Inactive' ? 'bg-gray-400' : ''}
             ${selected.includes(seat.id) ? 'bg-green-500' : ''}
           `}
         >

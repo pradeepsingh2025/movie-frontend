@@ -6,6 +6,7 @@ const url = process.env.NEXT_PUBLIC_API_URL
 async function getMovies(): Promise<Movie[]> {
   const res = await fetch(`${url}/api/movies`, {
     cache: 'no-store',
+    method: 'GET',
   });
 
   if (!res.ok) {

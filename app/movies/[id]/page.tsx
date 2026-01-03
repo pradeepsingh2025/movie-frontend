@@ -2,19 +2,42 @@ import { Movie, ShowTime } from '@/lib/types';
 
 const url = process.env.NEXT_PUBLIC_API_URL
 
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
 async function getMovie(id: string): Promise<Movie> {
-  const res = await fetch(`${url}/api/movies/${id}`);
+  const res = await fetch(`${url}/api/movies/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch movie: ${res.status} ${res.statusText}`);
+  }
   return res.json();
 }
 
 async function getShowtimes(id: string): Promise<ShowTime[]> {
-  const res = await fetch(`${url}/api/show-times?movieId=${id}`);
+  const res = await fetch(`${url}/api/show-times/movie/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch showtimes: ${res.status} ${res.statusText}`);
+  }
   return res.json();
 }
 
-export default async function MovieDetail({ params }: any) {
-  const movie = await getMovie(params.id);
-  const showtimes = await getShowtimes(params.id);
+export default async function MovieDetail({ params }: PageProps) {
+  const { id } = await params;
+  const movie = await getMovie(id);
+  const showtimes = await getShowtimes(id);
 
   return (
     <div className="p-8">
@@ -25,8 +48,8 @@ export default async function MovieDetail({ params }: any) {
       <ul>
         {showtimes.map(show => (
           <li key={show.id}>
-            <a href={`/showtimes/${show.id}`} className="underline">
-              {new Date(show.show_date).toLocaleString()}
+            <a href={`/showTimes/${show.id}`} className="underline">
+              {new Date(show.showDate).toLocaleString()}
             </a>
           </li>
         ))}

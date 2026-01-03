@@ -26,24 +26,33 @@ export interface Movie {
 
 export type ShowStatus = 'SCHEDULED' | 'CANCELLED' | 'FINISHED';
 
+
+
 export interface TimeSlot {
   id: number;
   name: string;
-  start_time: string; // timestamp or ISO
-  duration: string; // interval string or minutes
+  start_time: string; // time string in HH:MM:SS format (e.g., "09:00:00")
 }
+
+export interface DayTimeSlot {
+  id: number;
+  day: string;
+  time_slot_id: number;
+  timeSlot?: TimeSlot;
+}
+
 
 export interface ShowTime {
   id: number;
   slot_id: number;
   movie_id: number;
-  show_date: string; // ISO date/time
+  showDate: string; // ISO date/time
   status: ShowStatus;
   movie?: Movie;
-  slot?: TimeSlot;
+  timeSlot?: DayTimeSlot;
 }
 
-export type SeatStatus = 'AVAILABLE'|'RESERVED'|'BROKEN';
+export type SeatStatus = 'Active' | 'Inactive' | 'Damaged';
 
 export interface Seat {
   id: number;

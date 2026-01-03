@@ -1,18 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import SeatMap from '@/components/SeatMap';
 import { apiFetch } from '@/lib/apiClient';
 import { Seat } from '@/lib/types';
 
-export default function ShowtimePage({ params }: any) {
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default function ShowtimePage({ params }: PageProps) {
+  const { id } = use(params);
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
 
   useEffect(() => {
-    apiFetch(`/api/show-times/${params.id}/seats`)
+    apiFetch(`/api/seats?show_id=${id}`)
       .then(setSeats);
-  }, [params.id]);
+  }, [id]);
 
   function toggleSeat(id: number) {
     setSelected(s =>
@@ -24,7 +31,7 @@ export default function ShowtimePage({ params }: any) {
     await apiFetch('/api/reservations', {
       method: 'POST',
       body: JSON.stringify({
-        show_id: params.id,
+        show_id: id,
         seat_ids: selected,
       }),
     });

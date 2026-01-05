@@ -19,7 +19,6 @@ async function getMovies(): Promise<Movie[]> {
 export default async function HomePage() {
   const movies = await getMovies();
 
-  console.log(movies);
 
   return (
     <main>

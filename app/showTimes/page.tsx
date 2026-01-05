@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ShowTime } from '@/lib/types';
+import { apiFetch } from '@/lib/apiClient';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -21,19 +22,11 @@ function formatDuration(isoDuration: string): string {
 }
 
 async function getShowtimes(): Promise<ShowTime[]> {
-  const res = await fetch(`${url}/api/show-times`, {
+  const res = await apiFetch(`/api/show-times`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store',
   });
 
-  if (!res.ok) {
-    throw new Error(`Failed to fetch showtimes: ${res.status} ${res.statusText}`);
-  }
-
-  return res.json();
+  return res;
 }
 
 export default async function ShowtimesPage() {
@@ -94,13 +87,12 @@ export default async function ShowtimesPage() {
                           Status
                         </p>
                         <span
-                          className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                            show.status === 'SCHEDULED'
+                          className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${show.status === 'SCHEDULED'
                               ? 'bg-green-100 text-green-800'
                               : show.status === 'CANCELLED'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
+                                ? 'bg-red-100 text-red-800'
+                                : 'bg-gray-100 text-gray-800'
+                            }`}
                         >
                           {show.status}
                         </span>
@@ -151,7 +143,7 @@ export default async function ShowtimesPage() {
                             </>
                           )}
                         </div>
-                        
+
                         {show.movie?.duration && (
                           <div className="bg-gray-50 p-4 rounded-lg">
                             <p className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-1">

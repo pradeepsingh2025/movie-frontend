@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/AuthContext';
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { user, logout, accessToken } = useAuth();
 
   return (
     <header className="flex items-center justify-between px-6 py-4 border-b">
@@ -17,7 +17,7 @@ export default function Header() {
           Movies
         </Link>
 
-        {!user ? (
+        {!accessToken ? (
           <>
             <Link
               href="/auth/login"
@@ -39,7 +39,7 @@ export default function Header() {
               My Reservations
             </Link>
 
-            {user.role === 'admin' && (
+            {user && user.role === 'ADMIN' && (
               <Link href="/admin" className="hover:underline">
                 Admin
               </Link>

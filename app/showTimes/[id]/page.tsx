@@ -17,7 +17,7 @@ export default function ShowtimePage({ params }: PageProps) {
   const [selected, setSelected] = useState<number[]>([]);
 
   useEffect(() => {
-    apiFetch(`/api/seats?show_id=${id}`)
+    apiFetch(`/api/seats?${id}`)
       .then(setSeats);
   }, [id]);
 

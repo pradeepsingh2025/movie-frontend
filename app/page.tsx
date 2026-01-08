@@ -1,24 +1,17 @@
 import Link from 'next/link';
 import { Movie } from '@/lib/types';
+import { apiFetch } from '@/lib/apiClient';
 
 const url = process.env.NEXT_PUBLIC_API_URL
 
 async function getMovies(): Promise<Movie[]> {
-  const res = await fetch(`${url}/api/movies`, {
-    cache: 'no-store',
+  const data = await apiFetch('/api/movies', {
     method: 'GET',
   });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch movies');
-  }
-
-  return res.json();
+  return data;
 }
-
 export default async function HomePage() {
   const movies = await getMovies();
-
 
   return (
     <main>

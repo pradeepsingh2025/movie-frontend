@@ -16,40 +16,38 @@ export interface Genre {
 export interface Movie {
   id: number;
   title: string;
-  releaseYear?: number;
-  description?: string;
-  duration?: string; // e.g. "PT2H15M" or number of minutes
-  rating?: number;
-  posterImage?: string;
-  genres?: Genre[];
+  releaseYear: number;
+  description: string;
+  duration: string; // e.g. "PT2H15M" or number of minutes
+  rating: number;
+  posterImage: string;
+  trailerURL: string,
+  genre: string,
+  genres: Genre[];
 }
 
-export type ShowStatus = 'SCHEDULED' | 'CANCELLED' | 'FINISHED';
-
-
-
-export interface TimeSlot {
-  id: number;
-  name: string;
-  start_time: string; // time string in HH:MM:SS format (e.g., "09:00:00")
-}
-
-export interface DayTimeSlot {
-  id: number;
-  day: string;
-  time_slot_id: number;
-  timeSlot?: TimeSlot;
-}
+export type ShowStatus = 'SCHEDULED' | 'CANCELLED' | 'FINISHED' | 'FILLING' | 'FULL';
 
 
 export interface ShowTime {
   id: number;
   slot_id: number;
   movie_id: number;
+  startTime: string,
+  endTime: string,
   showDate: string; // ISO date/time
+  day: string,
   status: ShowStatus;
-  movie?: Movie;
-  timeSlot?: DayTimeSlot;
+  movie: Movie;
+  hall: Hall;
+}
+
+export interface Hall{
+  id: number,
+  capacity: number,
+  type: string,
+  name: string,
+  code: string,
 }
 
 export type SeatStatus = 'Active' | 'Inactive' | 'Damaged';

@@ -32,7 +32,7 @@ export default function Header() {
           {/* Logo */}
           <Link 
             href="/" 
-            className="text-2xl font-bold tracking-tight hover:opacity-90 transition-opacity duration-300 flex items-center gap-2"
+            className="text-xl md:text-2xl font-bold tracking-tight hover:opacity-90 transition-opacity duration-300 flex items-center gap-2"
           >
             <span className="text-red-600">🎬</span>
             <span>
@@ -96,7 +96,7 @@ export default function Header() {
 
                 <button
                   onClick={logout}
-                  className="px-4 py-2 text-sm font-medium text-gray-300 border border-gray-700 rounded-lg hover:border-red-500 hover:text-red-500 transition-all duration-200"
+                  className="px-4 py-2 text-sm font-medium text-gray-300 border border-gray-400 rounded-lg hover:border-red-500 hover:text-red-500 transition-all duration-200"
                 >
                   Logout
                 </button>

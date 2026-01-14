@@ -1,9 +1,9 @@
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import { Bot } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 border-t border-gray-800 text-gray-300 mt-auto">
+    <footer className="bg-gray-900 border-t border-gray-800/50 text-gray-300 mt-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-around items-center gap-4">
           
@@ -11,6 +11,7 @@ export default function Footer() {
 
           {/* Made By Section */}
           <div className="text-sm font-medium">
+            {/*  <Bot stroke-width="3" className="text-red-600 animate-pulse relative w-5 h-5 inline-block"/> */}
             Made with <span className="text-red-600 animate-pulse">❤</span> by{' '}
             <a 
               href="https://pradeepswork.space" // Replace with your actual link

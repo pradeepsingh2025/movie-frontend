@@ -17,6 +17,7 @@ async function getMovie(id: string): Promise<Movie> {
   const data = await apiFetch(`/api/movies/${id}`, {
     method: 'GET',
   });
+  console.log(data);
   return data;
 }
 
@@ -145,8 +146,8 @@ export default function MovieDetail({ params }: PageProps) {
                     </span>
                   )}
                   {movie.rating && (
-                    <span className="px-2 py-1  bg-yellow-300/50 rounded-full text-sm font-semibold">
-                      ⭐ {movie.rating}
+                    <span className="px-3 py-1  bg-black/70 backdrop-blur-md text-yellow-400 rounded-full text-sm font-semibold">
+                      <span>★</span> {movie.rating}
                     </span>
                   )}
                 </div>

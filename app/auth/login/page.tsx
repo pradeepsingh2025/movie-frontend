@@ -26,8 +26,6 @@ export default function LoginPage() {
           password: data.password,
         }),
       });
-
-      console.log("after login", result);
       if (result.accessToken && result.user) {
         login(result.accessToken, result.user);
         router.push('/movies');

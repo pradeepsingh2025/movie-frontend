@@ -168,7 +168,7 @@ export default function MoviesPage() {
       {/* Content */}
       <div className="relative z-10 p-8 mt-10">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-5xl font-bold text-slate-900 mb-2">Now Showing</h1>
+          <h1 className="text-5xl font-bold text-slate-900 mb-2">Show is on...</h1>
           <p className="text-slate-600 text-lg mb-8">Discover the latest movies in theaters</p>
 
           {movies.length === 0 ? (

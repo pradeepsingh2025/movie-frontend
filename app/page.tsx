@@ -1,73 +1,39 @@
-import Link from 'next/link';
-import { Movie } from '@/lib/types';
+import MovieDashboard from '../components/MovieDashboard';
+import { Movie } from '../lib/types';
 import { apiFetch } from '@/lib/apiClient';
 
-const url = process.env.NEXT_PUBLIC_API_URL
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 async function getMovies(): Promise<Movie[]> {
-  const data = await apiFetch('/api/movies', {
-    method: 'GET',
-  });
-  return data;
+  try {
+    const res = await apiFetch(`/api/movies`, { 
+      method: 'GET',
+      cache: 'no-store' 
+    });
+    if (!res) throw new Error('Failed to fetch');
+    return res;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 }
-export default async function HomePage() {
+
+export default async function Home() {
   const movies = await getMovies();
+  
+  // Logic to pick a featured movie (e.g., Highest Rated)
+  const featuredMovie = movies.length > 0 
+    ? movies.reduce((prev, current) => (prev.rating > current.rating) ? prev : current)
+    : null;
 
   return (
-    <main>
-      {/* HERO SECTION */}
-      <section className="bg-black text-white py-20 px-8 text-center">
-        <h1 className="text-4xl font-bold mb-4">
-          🎬 Book Movie Tickets Online
-        </h1>
-        <p className="text-lg opacity-80 mb-6">
-          Choose your favorite movie, select your seats, enjoy the show.
-        </p>
-
-        <Link
-          href="/movies"
-          className="inline-block bg-red-600 px-6 py-3 rounded text-white font-semibold"
-        >
-          Browse Movies
-        </Link>
-      </section>
-
-      {/* NOW SHOWING */}
-      <section className="p-8">
-        <h2 className="text-2xl font-bold mb-6">
-          Now Showing
-        </h2>
-
-        {movies.length === 0 ? (
-          <p>No movies available.</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {movies.map(movie => (
-              <Link
-                key={movie.id}
-                href={`/movies/${movie.id}`}
-                className="border rounded hover:shadow-lg transition p-3"
-              >
-                <div className="h-48 bg-gray-200 mb-3 flex items-center justify-center">
-                  {movie.posterImage ? (
-                    <img
-                      src={movie.posterImage}
-                      alt={movie.title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-gray-500">No Image</span>
-                  )}
-                </div>
-
-                <h3 className="font-semibold">{movie.title}</h3>
-                <p className="text-sm text-gray-600">
-                  {movie.releaseYear || '—'}
-                </p>
-              </Link>
-            ))}
-          </div>
-        )}
+    <main className="min-h-screen bg-black text-white selection:bg-red-900 selection:text-white">
+      {/* Container */}
+      <section className="container mx-auto px-4 py-6 md:py-10">
+        <MovieDashboard 
+            initialMovies={movies} 
+            featuredMovie={featuredMovie} 
+        />
       </section>
     </main>
   );

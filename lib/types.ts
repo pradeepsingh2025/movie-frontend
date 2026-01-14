@@ -23,7 +23,8 @@ export interface Movie {
   posterImage: string;
   trailerURL: string,
   genre: string,
-  genres: Genre[];
+  genres: Genre[],
+  showTimes: ShowTime[];
 }
 
 export type ShowStatus = 'SCHEDULED' | 'CANCELLED' | 'FINISHED' | 'FILLING' | 'FULL';
@@ -55,6 +56,8 @@ export type SeatStatus = 'Active' | 'Inactive' | 'Damaged';
 export interface Seat {
   id: number;
   seat: string; // "A1"
+  showId: number,
+  hallId: number,
   status: SeatStatus;
 }
 

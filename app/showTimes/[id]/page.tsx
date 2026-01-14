@@ -17,8 +17,11 @@ export default function ShowtimePage({ params }: PageProps) {
   const [selected, setSelected] = useState<number[]>([]);
 
   useEffect(() => {
-    apiFetch(`/api/seats?${id}`)
-      .then(setSeats);
+    apiFetch(`/api/seats?${id}`,{
+      method: 'GET',
+    })
+      .then(setSeats)
+      .then(()=> console.log(seats));
   }, [id]);
 
   function toggleSeat(id: number) {

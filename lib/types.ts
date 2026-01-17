@@ -38,6 +38,7 @@ export interface ShowTime {
   endTime: string,
   showDate: string; // ISO date/time
   day: string,
+  price: number,
   status: ShowStatus;
   movie: Movie;
   hall: Hall;

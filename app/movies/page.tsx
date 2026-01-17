@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/lib/AuthContext';
 
 interface MovieCardProps {
   movie: Movie;
@@ -94,6 +95,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 };
 
 export default function MoviesPage() {
+  const { user } = useAuth();
+  console.log("user from movies page", user);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

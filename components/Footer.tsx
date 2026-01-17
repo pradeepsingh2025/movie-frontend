@@ -2,6 +2,7 @@ import { Bot } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Footer() {
+
   return (
     <footer className="bg-gray-900 border-t border-gray-800/50 text-gray-300 mt-auto">
       <div className="container mx-auto px-4 py-8">

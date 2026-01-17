@@ -4,8 +4,10 @@
 import { use, useEffect, useState } from 'react';
 import SeatMap from '@/components/SeatMap';
 import { apiFetch } from '@/lib/apiClient';
-import { Seat, ShowTime } from '@/lib/types';
+import { Seat, ShowTime, User } from '@/lib/types';
 import { div } from 'motion/react-m';
+import { useAuth } from '@/lib/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface PageProps {
   params: Promise<{
@@ -14,11 +16,24 @@ interface PageProps {
 }
 
 export default function ShowtimePage({ params }: PageProps) {
+
+  const { user } = useAuth();
+  const router = useRouter()
+
   const { id } = use(params);
   const [seats, setSeats] = useState<Seat[]>([]);
   const [show, setShow] = useState<ShowTime>();
   const [selected, setSelected] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const redirectTo = encodeURIComponent(window.location.pathname);
+
+
+  useEffect(() => {
+    if (!user) {
+      router.push(`/auth/login?redirect=${redirectTo}`);
+    }
+  }, [user, router]);
 
   useEffect(() => {
     // Added loading state for better UX
@@ -66,8 +81,9 @@ export default function ShowtimePage({ params }: PageProps) {
       await apiFetch('/api/reservations', {
         method: 'POST',
         body: JSON.stringify({
-          show_id: id,
-          seat_ids: selected,
+          show_time_id: id,
+          user_id: user?.id,
+          seatreservation_seats_id: selected,
         }),
       });
       alert('Reservation successful!');
@@ -100,7 +116,7 @@ export default function ShowtimePage({ params }: PageProps) {
       </main>
 
       {/* Bottom Sticky Booking Bar */}
-      <div className="bg-gray-800 border-t border-white/10 p-4 sticky bottom-0 z-10">
+      <div className="bg-gray-800/50 backdrop-blur-2xl border-t border-white/10 p-4 sticky bottom-0 z-10">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
 
           {/* Selection Summary */}
@@ -110,7 +126,7 @@ export default function ShowtimePage({ params }: PageProps) {
             </p>
             <p className="text-xl font-semibold">
               {/* Mock Price Calculation - Assuming $12 per ticket */}
-              ${selected.length * 12}.00
+              ₹ {selected.length * (show?.price ?? 1)}
             </p>
           </div>
 

@@ -35,10 +35,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (!res.ok){
           throw new Error("Unexpected refresh failure");
         } 
-
+        
         const data = await res.json();
         setAccessToken(data.token);
         setAccessTokenState(data.token);
+        setUser(data.user);
       } catch{
         // user remains logged out
       } finally {

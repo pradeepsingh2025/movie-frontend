@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/lib/AuthContext';
 import { apiFetch } from '@/lib/apiClient';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface LoginFormData {
@@ -15,6 +15,7 @@ export default function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
   const { login } = useAuth();
   const router = useRouter();
+  const params = useSearchParams();
 
   async function onSubmit(data: LoginFormData) {
     try {
@@ -28,7 +29,8 @@ export default function LoginPage() {
       });
       if (result.accessToken && result.user) {
         login(result.accessToken, result.user);
-        router.push('/movies');
+        const redirect = params.get('redirect') || '/';
+    router.replace(redirect);
       }
     } catch (error: any) {
       alert(`Login failed: ${error.message}`);

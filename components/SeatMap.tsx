@@ -79,9 +79,9 @@ export default function SeatMap({ seats, selected, toggle, movie }: SeatMapProps
       {/* --- SCREEN VISUAL --- */}
       <div className="w-full mt-8 mb-5 md:mb-10 md:mt-16 px-4 perspective-[500px]">
         <div className="relative group">
-          <div className="h-8 md:h-12 w-3/4 md:w-2/3 mx-auto bg-gradient-to-b from-blue-300/40 to-transparent 
-                    border-t border-white/60 rounded-[50%] blur-[1px]
-                    transform rotate-x-[-20deg] shadow-[0_-10px_30px_rgba(255,255,255,0.1)] 
+          <div className="h-8 md:h-12 w-3/4 md:w-2/3 mx-auto bg-gradient-to-b from-black/70 to-transparent 
+                    border-t border-black/60 rounded-[50%] blur-[1px]
+                    transform rotate-x-[-20deg] shadow-[0_-10px_30px_rgba(0,0,0,0.3)] 
                     cursor-pointer transition-all duration-300 hover:shadow-[0_-15px_40px_rgba(255,255,255,0.15)]"
           />
 
@@ -116,7 +116,7 @@ export default function SeatMap({ seats, selected, toggle, movie }: SeatMapProps
       </div>
 
       {/* --- SEAT LAYOUT --- */}
-      <div className="w-full mt-10 md:mt-10 pt-10 overflow-x-auto pb-20 px-2 md:px-8 hide-scrollbar">
+      <div className="w-full pt-10 overflow-x-auto pb-10  px-2 md:px-8 hide-scrollbar">
         <div className="min-w-max mx-auto flex flex-col gap-2 md:gap-3">
 
           {rowPairs.map((pair, index) => {

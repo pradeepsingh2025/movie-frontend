@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Movie } from '../lib/types'; 
+import { Movie } from '../lib/types';
 import Link from 'next/link';
 import { Play, X, Clock } from 'lucide-react'; // Using Lucide icons as requested
 
@@ -18,32 +18,32 @@ const getEmbedUrl = (url: string): string | null => {
 };
 
 const formatDuration = (dur?: string) => {
-    if (!dur) return '';
-    // If it's number (minutes)
-    if (typeof dur === 'number') {
-      const hours = Math.floor(dur / 60);
-      const minutes = dur % 60;
-      return `${hours}h ${minutes}m`;
-    }
-    // Parse PT2H30M
-    const match = dur.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
-    if (match) {
-      const hours = match[1] || '0';
-      const minutes = match[2] || '0';
-      return `${hours}h ${minutes}m`;
-    }
-    return dur;
+  if (!dur) return '';
+  // If it's number (minutes)
+  if (typeof dur === 'number') {
+    const hours = Math.floor(dur / 60);
+    const minutes = dur % 60;
+    return `${hours}h ${minutes}m`;
+  }
+  // Parse PT2H30M
+  const match = dur.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
+  if (match) {
+    const hours = match[1] || '0';
+    const minutes = match[2] || '0';
+    return `${hours}h ${minutes}m`;
+  }
+  return dur;
 };
 
 interface DashboardProps {
-    initialMovies: Movie[];
-    featuredMovie: Movie | null;
+  initialMovies: Movie[];
+  featuredMovie: Movie | null;
 }
 
 export default function MovieDashboard({ initialMovies, featuredMovie }: DashboardProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string>('All');
-  
+
   // Modal State
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
   const [trailerTitle, setTrailerTitle] = useState<string | null>(null);
@@ -68,11 +68,11 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
 
   return (
     <div className="w-full">
-      
+
       {/* --- HERO SECTION (Integrated here for interactivity) --- */}
       <section className="max-w-7xl mx-auto relative bg-gradient-to-r from-gray-900 to-black border-b border-gray-800 mb-12 rounded-2xl overflow-hidden shadow-2xl">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black"></div>
-        
+
         <div className="px-6 py-12 md:px-10 md:py-20 relative z-10">
           {featuredMovie ? (
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
@@ -87,17 +87,17 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
                 <p className="text-gray-300 text-lg md:text-xl line-clamp-3 max-w-2xl">
                   {featuredMovie.description || "Experience the best cinema has to offer."}
                 </p>
-                
+
                 <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
-                  <Link 
-                    href={`/movies/${featuredMovie.id}`} 
+                  <Link
+                    href={`/movies/${featuredMovie.id}`}
                     className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full transition-transform hover:scale-105 shadow-lg shadow-red-600/30"
                   >
                     Get Tickets
                   </Link>
-                  
+
                   {featuredMovie.trailerURL && (
-                    <button 
+                    <button
                       onClick={() => openTrailer(featuredMovie.trailerURL, featuredMovie.title)}
                       className="px-8 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-semibold rounded-full transition-colors flex items-center gap-2"
                     >
@@ -111,8 +111,8 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
               {/* Poster */}
               <div className="w-64 md:w-80 lg:w-96 flex-shrink-0 relative group">
                 <div className="absolute -inset-1 bg-gradient-to-tr from-red-600 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-                <img 
-                  src={featuredMovie.posterImage || '/placeholder-movie.png'} 
+                <img
+                  src={featuredMovie.posterImage || '/placeholder-movie.png'}
                   alt={featuredMovie.title}
                   className="relative w-full h-auto rounded-xl shadow-2xl border border-gray-800 transform group-hover:-translate-y-2 transition-transform duration-500 object-cover"
                 />
@@ -126,7 +126,7 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
 
       {/* --- FILTER & DASHBOARD --- */}
       <div className="max-w-7xl mx-auto flex items-center gap-4 mb-8">
-            <h2 className="text-3xl font-bold border-l-4 border-red-600 pl-4">Now Showing</h2>
+        <h2 className="text-3xl font-bold border-l-4 border-red-600 pl-4">Now Showing</h2>
       </div>
 
       <div className=" max-w-7xl mx-auto flex flex-col md:flex-row gap-4 mb-8 justify-between items-center bg-gray-900 p-4 rounded-xl shadow-lg border border-gray-800">
@@ -142,19 +142,18 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
         </div>
 
         <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
-            {allGenres.slice(0, 7).map(genre => (
-                <button
-                    key={genre}
-                    onClick={() => setSelectedGenre(genre)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${
-                        selectedGenre === genre 
-                        ? 'bg-red-600 text-white' 
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                    }`}
-                >
-                    {genre}
-                </button>
-            ))}
+          {allGenres.slice(0, 7).map(genre => (
+            <button
+              key={genre}
+              onClick={() => setSelectedGenre(genre)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGenre === genre
+                  ? 'bg-red-600 text-white'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                }`}
+            >
+              {genre}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -162,9 +161,9 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredMovies.map((movie) => (
           <div key={movie.id} className="group bg-gray-900 rounded-xl overflow-hidden shadow-lg border border-gray-800 hover:border-red-600 transition-all duration-300 hover:shadow-red-900/20 flex flex-col">
-            <div className="relative h-96 w-full overflow-hidden bg-gray-800">
-              <img 
-                src={movie.posterImage || '/placeholder-movie.png'} 
+            <div className="relative h-[200px] w-full overflow-hidden bg-gray-800">
+              <img
+                src={movie.posterImage || '/placeholder-movie.png'}
                 alt={movie.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
@@ -182,8 +181,8 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
 
               <div className="flex items-center text-gray-400 text-sm mb-4 space-x-3">
                 <span className="flex items-center gap-1">
-                    <Clock size={14} />
-                    {formatDuration(movie.duration)}
+                  <Clock size={14} />
+                  {formatDuration(movie.duration)}
                 </span>
                 <span>|</span>
                 <span className="truncate max-w-[120px] text-gray-300">{movie.genres.map(g => g.name).join(', ')}</span>
@@ -193,14 +192,14 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
                 <Link href={`/movies/${movie.id}`} className="col-span-2 text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg transition-colors shadow-lg shadow-red-900/20">
                   Book Tickets
                 </Link>
-                
+
                 {movie.trailerURL && (
-                    <button 
-                        onClick={() => openTrailer(movie.trailerURL, movie.title)}
-                        className="col-span-2 text-center text-sm text-gray-400 border border-gray-600 cursor-pointer hover:text-white transition-colors flex items-center justify-center gap-2 py-1"
-                    >
-                       <Play size={14} fill='currentColor' /> Watch Trailer
-                    </button>
+                  <button
+                    onClick={() => openTrailer(movie.trailerURL, movie.title)}
+                    className="col-span-2 text-center text-sm border border-gray-600 cursor-pointer flex items-center justify-center gap-2 rounded-lg bg-transparent py-3 font-semibold text-gray-300 transition-colors hover:border-gray-500 hover:text-white"
+                  >
+                    <Play size={14} fill='currentColor' /> Watch Trailer
+                  </button>
                 )}
               </div>
             </div>

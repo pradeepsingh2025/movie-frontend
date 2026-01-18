@@ -60,7 +60,7 @@ export async function apiFetch(
   // const fullUrl = url.startsWith('http') ? url : `${API_BASE_URL}${url}`;
   const baseUrl = getBaseUrl();
   const fullUrl = `${baseUrl}${url}`;
-  
+
   const headers = new Headers(options.headers);
 
   if (accessToken) {
@@ -69,7 +69,7 @@ export async function apiFetch(
   if (options.body && !(options.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json');
   }
-  
+
 
   const res = await fetch(fullUrl, {
     ...options,
@@ -78,20 +78,42 @@ export async function apiFetch(
   });
 
   if (res.status === 401 && retry) {
-    await refreshAccessTokenOnce();
-    return apiFetch(url, options, false);
+    try {
+      await refreshAccessTokenOnce();
+      return apiFetch(url, options, false);
+    } catch (refreshError) {
+      // Refresh failed (e.g. invalid refresh token), treat as auth error
+      // Fall through to the error handling block below
+    }
   }
 
   if (!res.ok) {
     const errorText = await res.text();
+    let errorMessage = `API error ${res.status}: ${errorText.substring(0, 200)}`;
+
     // Provide more helpful error messages
     if (res.status === 404) {
-      throw new Error(
-        `API endpoint not found: ${fullUrl}. ` +
-        `Make sure your backend API server is running at ${API_BASE_URL} and the endpoint exists.`
-      );
+      errorMessage = `API endpoint not found: ${fullUrl}. Make sure your backend API server is running at ${API_BASE_URL} and the endpoint exists.`;
+    } else if (res.status === 401) {
+      errorMessage = "Session expired or invalid credentials. Please login again.";
     }
-    throw new Error(`API error ${res.status}: ${errorText.substring(0, 200)}`);
+
+    // Try to parse JSON error if possible for cleaner messages
+    try {
+      const jsonError = JSON.parse(errorText);
+      // Common backend error formats
+      if (jsonError.message) errorMessage = jsonError.message;
+      if (jsonError.error) errorMessage = jsonError.error;
+      if (jsonError.details) errorMessage = jsonError.details;
+    } catch (e) {
+      // ignore json parse error, use fallback
+    }
+
+    import('./errorEvent').then(({ dispatchApiError }) => {
+      dispatchApiError(errorMessage, `Error ${res.status}`);
+    });
+
+    throw new Error(errorMessage);
   }
 
   return res.json();

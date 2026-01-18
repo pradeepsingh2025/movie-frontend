@@ -3,10 +3,25 @@
 import React, { useEffect, useState } from "react";
 import { InfiniteMovingCards } from "../../components/ui/infinite-moving-cards";
 import { Movie } from "@/lib/types";
+import { apiFetch } from "@/lib/apiClient";
 
 export default function InfiniteMovingCardsDemo() {
   return (
     <div className="h-[60rem] rounded-md flex flex-col antialiased bg-slate-950 dark:bg-white dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+      <div className="absolute top-4 right-4 z-50 flex flex-col gap-2">
+        <button
+          onClick={() => apiFetch('/non-existent-url').catch(console.error)}
+          className="px-4 py-2 bg-red-800 text-white rounded hover:bg-red-700 transition"
+        >
+          Trigger 404
+        </button>
+        <button
+          onClick={() => import('@/lib/errorEvent').then(m => m.dispatchApiError('Simulated 500 Error', 'Server Error'))}
+          className="px-4 py-2 bg-orange-800 text-white rounded hover:bg-orange-700 transition"
+        >
+          Simulate Custom Error
+        </button>
+      </div>
       <InfiniteMovingCards
         items={movies}
         direction="right"

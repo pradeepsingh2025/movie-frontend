@@ -167,8 +167,8 @@ function TicketCard({ reservation }: { reservation: Reservation }) {
       </div>
 
       {/* Decorative "Tear" Lines (Optional - makes it look like a ticket) */}
-      <div className="absolute top-1/2 -left-2 w-4 h-4 bg-neutral-900 rounded-full sm:block hidden" />
-      <div className="absolute top-1/2 -right-2 w-4 h-4 bg-neutral-900 rounded-full sm:block hidden" />
+      <div className="absolute top-1/2 -left-2 w-5 h-5 bg-neutral-900 rounded-full sm:block hidden" />
+      <div className="absolute top-1/2 -right-2 w-5 h-5 bg-neutral-900 rounded-full sm:block hidden" />
     </div>
   );
 }

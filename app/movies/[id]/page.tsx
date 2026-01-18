@@ -110,15 +110,15 @@ export default function MovieDetail({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Hero Section */}
-      <div className="relative h-[500px] overflow-hidden">
+      <div className="relative min-h-[500px] flex items-end overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent z-10"></div>
         <img
           src={movie.posterImage || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&h=500&fit=crop'}
           alt={movie.title}
-          className="w-full h-full object-cover blur-sm scale-110"
+          className="absolute inset-0 w-full h-full object-cover blur-sm scale-110"
         />
-        
-        <div className="absolute bottom-0 left-0 right-0 z-20 p-8">
+
+        <div className="relative w-full z-20 p-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row gap-8 items-center">
               {/* Movie Poster */}
@@ -136,7 +136,7 @@ export default function MovieDetail({ params }: PageProps) {
                 <div className="flex flex-wrap gap-4 mb-4 text-gray-300">
                   {movie.genres && (
                     <span className="px-3 py-1 bg-gray-800 rounded-full text-sm">
-                      {movie.genres.map(g => g.name).join(' / ') || 'Mixed'} 
+                      {movie.genres.map(g => g.name).join(' / ') || 'Mixed'}
                     </span>
                   )}
                   {movie.duration && (
@@ -154,7 +154,7 @@ export default function MovieDetail({ params }: PageProps) {
                 <p className="text-gray-300 text-lg mb-6 max-w-3xl">
                   {movie.description || 'No description available'}
                 </p>
-                
+
                 {movie.trailerURL && (
                   <button
                     onClick={() => setShowTrailer(true)}
@@ -173,7 +173,7 @@ export default function MovieDetail({ params }: PageProps) {
       {/* Showtimes Section */}
       <div className="max-w-7xl mx-auto px-8 py-12">
         <h2 className="text-3xl font-bold mb-8 flex items-center gap-2">
-          <Calendar size={32} />
+          <Calendar size={30} />
           Available Shows
         </h2>
 
@@ -182,27 +182,26 @@ export default function MovieDetail({ params }: PageProps) {
             {showtimes.map((show) => (
               <div
                 key={show.id}
-                className="bg-white/20 rounded-lg p-6 border border-gray-700 hover:border-white/50 transition-all"
+                className="bg-slate-800 rounded-lg p-6 border border-gray-700 hover:border-gray-500 transition-all"
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                  <p className="text-2xl text-yellow-300 font-semibold ">{(show.day.toUpperCase())}</p>
-                    <p className="text-sm font-bold ">
+                    <p className="text-2xl text-slate-400 font-semibold ">{(show.day.toUpperCase())}</p>
+                    <p className="text-sm text-slate-400 font-bold ">
                       {new Date(show.showDate).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                       })}
                     </p>
-                    
+
                   </div>
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      show.status === 'SCHEDULED'
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${show.status === 'SCHEDULED'
                         ? 'bg-green-600 text-white'
                         : show.status === 'FILLING'
-                        ? 'bg-yellow-600 text-white'
-                        : 'bg-red-600 text-white'
-                    }`}
+                          ? 'bg-yellow-600 text-white'
+                          : 'bg-red-600 text-white'
+                      }`}
                   >
                     {show.status?.toUpperCase() || 'AVAILABLE'}
                   </span>
@@ -224,11 +223,10 @@ export default function MovieDetail({ params }: PageProps) {
                 <button
                   onClick={() => handleBooking(show.id)}
                   disabled={show.status === 'FULL'}
-                  className={`w-full py-3 rounded-lg font-semibold transition-colors ${
-                    show.status === 'FULL'
+                  className={`w-full py-3 rounded-lg font-semibold transition-colors ${show.status === 'FULL'
                       ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                       : 'bg-red-500 hover:bg-red-600 text-white cursor-pointer'
-                  }`}
+                    }`}
                 >
                   {show.status === 'FULL' ? 'Sold Out' : 'Book Tickets'}
                 </button>

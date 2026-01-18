@@ -26,19 +26,20 @@ export default function LoginPage() {
           email: data.email,
           password: data.password,
         }),
-      });
+      }, false);
       if (result.accessToken && result.user) {
         login(result.accessToken, result.user);
         const redirect = params.get('redirect') || '/';
-    router.replace(redirect);
+        router.replace(redirect);
       }
     } catch (error: any) {
-      alert(`Login failed: ${error.message}`);
+      console.error('Login error:', error);
+      // Global error modal will show the error
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-[90vh] flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

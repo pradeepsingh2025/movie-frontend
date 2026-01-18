@@ -116,7 +116,7 @@ export default function ShowtimePage({ params }: PageProps) {
       </main>
 
       {/* Bottom Sticky Booking Bar */}
-      <div className="bg-gray-800/50 backdrop-blur-2xl border-t border-white/10 p-4 sticky bottom-0 z-10">
+      <div className="bg-neutral-900 backdrop-blur-2xl border-t border-white/10 p-4 sticky bottom-0 z-10">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
 
           {/* Selection Summary */}

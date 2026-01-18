@@ -8,6 +8,7 @@ import { Seat, ShowTime, User } from '@/lib/types';
 import { div } from 'motion/react-m';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
+import { BookingSuccessModal } from '@/components/BookingSuccessModal';
 
 interface PageProps {
   params: Promise<{
@@ -25,7 +26,8 @@ export default function ShowtimePage({ params }: PageProps) {
   const [show, setShow] = useState<ShowTime>();
   const [selected, setSelected] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   const redirectTo = encodeURIComponent(window.location.pathname);
 
 
@@ -86,11 +88,10 @@ export default function ShowtimePage({ params }: PageProps) {
           seatreservation_seats_id: selected,
         }),
       });
-      alert('Reservation successful!');
-      // Ideally redirect to a success page or clear selection here
+      setShowSuccessModal(true);
       setSelected([]);
     } catch (error) {
-      alert('Booking failed. Please try again.');
+      console.error("Failed to book seats", error);
     }
   }
 
@@ -145,6 +146,11 @@ export default function ShowtimePage({ params }: PageProps) {
           </button>
         </div>
       </div>
+
+      <BookingSuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+      />
     </div>
   );
 }

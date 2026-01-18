@@ -85,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider value={{ user, login, logout, accessToken }}>
-      {loading ? <div>Loading...</div> : children}
+      {loading ? <div className='text-center text-xl md:text-4xl font-semibold text-gray-500 mt-20 md:mt-60 animate-pulse'>Loading...</div> : children}
     </AuthContext.Provider>
   );
 }

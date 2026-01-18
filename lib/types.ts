@@ -52,7 +52,7 @@ export interface Hall{
   code: string,
 }
 
-export type SeatStatus = 'Active' | 'Inactive' | 'Damaged';
+export type SeatStatus = 'ACTIVE' | 'INACTIVE' | 'DAMAGED';
 
 export interface Seat {
   id: number;
@@ -62,10 +62,13 @@ export interface Seat {
   status: SeatStatus;
 }
 
-export interface Reservation {
+export interface ReservationSeat {
   id: number;
-  user_id: number;
-  show_id: number;
-  seats?: Seat[];
-  created_at?: string;
+  seat: string; // "O1"
+}
+
+export interface Reservation {
+  reservation_seats: ReservationSeat[];
+  show_time: ShowTime;
+  // user field is likely not needed for the UI unless it's an admin view
 }

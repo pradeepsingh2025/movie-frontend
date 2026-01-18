@@ -8,7 +8,7 @@ export default function Header() {
   const { user, logout, accessToken } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const text = "MovieBook";
+  const text = "BookYourShow";
 
   return (
     <>
@@ -27,14 +27,14 @@ export default function Header() {
         }
       `}</style>
 
-      <header className="sticky top-0 z-40 px-6 py-4 bg-gray-950/80 backdrop-blur-md border-b border-gray-800 shadow-lg">
+      <header className="sticky top-0 z-40 px-6 py-4 bg-gray-950 backdrop-blur-md border-b border-gray-800 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10">
           {/* Logo */}
           <Link 
             href="/" 
             className="text-xl md:text-2xl font-bold tracking-tight hover:opacity-90 transition-opacity duration-300 flex items-center gap-2"
           >
-            <span className="text-red-600">🎬</span>
+            <span className="text-red-600 ">🎬</span>
             <span>
               {text.split('').map((char, index) => (
                 <span

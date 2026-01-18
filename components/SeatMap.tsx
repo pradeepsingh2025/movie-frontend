@@ -40,7 +40,7 @@ export default function SeatMap({ seats, selected, toggle, movie }: SeatMapProps
     <div className="flex gap-1 md:gap-3 items-center">
       {seatsByRow[rowLabel].map((seat) => {
         const isSelected = selected.includes(seat.id);
-        const isInactive = seat.status === 'Inactive' || seat.status === 'Damaged';
+        const isInactive = seat.status === 'INACTIVE' || seat.status === 'DAMAGED';
 
         return (
           <button

@@ -35,7 +35,6 @@ async function refreshAccessToken() {
   if (!res.ok) throw new Error('Refresh failed');
 
   const data = await res.json();
-  console.log("accessToken from refreshAccessToken function", data.token);
   setAccessToken(data.token);
 }
 

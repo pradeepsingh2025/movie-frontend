@@ -17,7 +17,6 @@ async function getMovie(id: string): Promise<Movie> {
   const data = await apiFetch(`/api/movies/${id}`, {
     method: 'GET',
   });
-  console.log(data);
   return data;
 }
 

@@ -27,6 +27,12 @@ export default function LoginPage() {
           password: data.password,
         }),
       }, false);
+
+      if (result.user.role !== 'USER') {
+        console.error('You are not authorized to login');
+        throw new Error('You are not authorized to login');
+      }
+
       if (result.accessToken && result.user) {
         login(result.accessToken, result.user);
         const redirect = params.get('redirect') || '/';

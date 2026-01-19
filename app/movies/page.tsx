@@ -96,7 +96,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
 
 export default function MoviesPage() {
   const { user } = useAuth();
-  console.log("user from movies page", user);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

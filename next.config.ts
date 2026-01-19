@@ -35,12 +35,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'm.media-amazon.com',
+        hostname: 'm.media-amazon.com', //https://m.media-amazon.com
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'm.media-amazon.com',
+        hostname: 'www.firstforwomen.com',
         pathname: '/**',
       },
       {

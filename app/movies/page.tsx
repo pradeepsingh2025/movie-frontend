@@ -59,7 +59,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
           {movie.genres && movie.genres.length > 0 && (
             <>
               <span>•</span>
-              <span className="line-clamp-1">{movie.genres.map(g => g.name).join(' | ')}</span>
+              <span className="line-clamp-1">{movie.genres.slice(0, 2).map(g => g.name).join(' | ')}</span>
             </>
           )}
           {movie.duration && (

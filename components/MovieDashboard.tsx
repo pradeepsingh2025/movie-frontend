@@ -142,7 +142,7 @@ export default function MovieDashboard({ initialMovies, featuredMovie }: Dashboa
         </div>
 
         <div className="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
-          {allGenres.slice(0, 7).map(genre => (
+          {allGenres.map(genre => (
             <button
               key={genre}
               onClick={() => setSelectedGenre(genre)}

@@ -4,14 +4,24 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { User } from './types';
 import { setAccessToken } from './apiClient';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+function getBaseUrl() {
+  // Browser
+  if (typeof window !== "undefined") {
+    return "";
+  }
+
+  // Server (Next.js)
+  return API_BASE_URL ?? "http://localhost:3000";
+}
+
 interface AuthContextType {
   user: User | null;
   login: (token: string, user: User) => void;
   logout: () => void;
   accessToken: string | null;
 }
-
-const url = process.env.NEXT_PUBLIC_API_URL
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -22,8 +32,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     async function restoreAuth() {
+      const baseUrl = getBaseUrl();
       try {
-        const res = await fetch("/api/auth/refresh", {
+        const res = await fetch(`${baseUrl}/api/auth/refresh`, {
           method: "POST",
           credentials: "include",
         });

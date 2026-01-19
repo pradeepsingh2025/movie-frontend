@@ -2,14 +2,6 @@
 // The backend API server should run on a different port than the Next.js frontend (3000)
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-// if (!API_BASE_URL) {
-//   throw new Error(
-//     'NEXT_PUBLIC_API_URL environment variable is not set. ' +
-//     'Please create a .env.local file with: NEXT_PUBLIC_API_URL=http://localhost:8000 ' +
-//     '(or whatever port your backend API server is running on)'
-//   );
-// }
-
 function getBaseUrl() {
   // Browser
   if (typeof window !== "undefined") {
@@ -17,7 +9,7 @@ function getBaseUrl() {
   }
 
   // Server (Next.js)
-  return process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+  return API_BASE_URL ?? "http://localhost:3000";
 }
 
 let accessToken: string | null = null;
@@ -27,7 +19,8 @@ export function setAccessToken(token: string | null) {
 }
 
 async function refreshAccessToken() {
-  const res = await fetch(`/api/auth/refresh`, {
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/auth/refresh`, {
     method: 'POST',
     credentials: 'include'
   });

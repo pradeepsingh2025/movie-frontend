@@ -2,8 +2,6 @@ import MovieDashboard from '../components/MovieDashboard';
 import { Movie } from '../lib/types';
 import { apiFetch } from '@/lib/apiClient';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
-
 async function getMovies(): Promise<Movie[]> {
   try {
   const res = await apiFetch(`/api/movies`, {

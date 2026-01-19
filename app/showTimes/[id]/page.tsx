@@ -28,44 +28,35 @@ export default function ShowtimePage({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const redirectTo = encodeURIComponent(window.location.pathname);
-
-
   useEffect(() => {
     if (!user) {
+      const redirectTo = encodeURIComponent(window.location.pathname);
       router.push(`/auth/login?redirect=${redirectTo}`);
     }
   }, [user, router]);
 
   useEffect(() => {
-    // Added loading state for better UX
-    setLoading(true);
-    apiFetch(`/api/showtimes/${id}/seats`, {
-      method: 'GET',
-    })
-      .then((data) => {
-        setSeats(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load seats", err);
-        setLoading(false);
-      });
-  }, [id]);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const [seatsData, showData] = await Promise.all([
+          apiFetch(`/api/showtimes/${id}/seats`, { method: 'GET' }),
+          apiFetch(`/api/show-times/${id}`, { method: 'GET' })
+        ]);
 
-  useEffect(() => {
-    setLoading(true)
-    apiFetch(`/api/show-times/${id}`, {
-      method: 'GET',
-    })
-      .then((data) => {
-        setShow(data);
+        setSeats(seatsData);
+        setShow(showData);
+      } catch (err) {
+        console.error("Failed to load data", err);
+      } finally {
         setLoading(false);
-      }).catch((err) => {
-        console.error("Failed to load show", err);
-        setLoading(false);
-      });
-  }, [id])
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
 
 
   function toggleSeat(seatId: number) {

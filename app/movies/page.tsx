@@ -6,7 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
+import MoviesSkeleton from '@/components/MoviesSkeleton';
 import { useAuth } from '@/lib/AuthContext';
+
+
+
 
 interface MovieCardProps {
   movie: Movie;
@@ -121,20 +125,7 @@ export default function MoviesPage() {
 
   // Show loading state
   if (loading) {
-    return (
-      <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-pink-50">
-        {/* Background Gradient */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-200/30 rounded-full blur-3xl" />
-
-        <div className="relative z-10 flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-500 text-lg">Loading movies...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <MoviesSkeleton />;
   }
 
   // Show error state

@@ -9,6 +9,7 @@ import { div } from 'motion/react-m';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
 import { BookingSuccessModal } from '@/components/BookingSuccessModal';
+import BookingSkeleton from '@/components/BookingSkeleton';
 
 interface PageProps {
   params: Promise<{
@@ -49,7 +50,7 @@ export default function ShowtimePage({ params }: PageProps) {
       } catch (err) {
         console.error("Failed to load data", err);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 10000);
       }
     };
 
@@ -93,15 +94,15 @@ export default function ShowtimePage({ params }: PageProps) {
       {/* Header */}
       <header className="py-2 px-4 border-b border-white/10">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-xl font-light tracking-wide">Select Seats for {show?.movie.title}{`'s`} {show?.day.toUpperCase()} Show</h1>
-          <p className="text-gray-400 text-[12px]"><span className='text-red-700 tracking-widest border-r border-gray-600 pr-1 font-semibold'>{show?.hall.type}</span><span className='pl-1'>{show?.startTime} {'-'} {show?.endTime}</span></p>
+          {show?.movie.title ? (<h1 className="text-xl font-light tracking-wide">Select Seats for {show?.movie.title}{`'s`} {show?.day.toUpperCase()} Show</h1>) : (<h1 className="text-xl font-light tracking-wide">No Show Available</h1>)}
+            {show?.hall.type ? (<p className="text-gray-400 text-[12px]"><span className='text-red-700 tracking-widest border-r border-gray-600 pr-1 font-semibold'>{show?.hall.type}</span><span className='pl-1'>{show?.startTime} {'-'} {show?.endTime}</span></p>) : (null)}
         </div>
       </header>
 
       {/* Main Content Area */}
       <main className="flex-1 py-5 px-2 overflow-y-auto">
         {loading ? (
-          <div className="text-center text-gray-500 mt-20 animate-pulse">Loading theater map...</div>
+          <BookingSkeleton />
         ) : (
           seats.length !== 0 ? (<SeatMap seats={seats} selected={selected} toggle={toggleSeat} movie={show ? show?.movie.title : ''} />) : (<div className='text-center text-gray-500 mt-20 animate-pulse'>No Show Available</div>)
         )}

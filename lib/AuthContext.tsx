@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { User } from './types';
 import { setAccessToken } from './apiClient';
+import GlobalLoading from '@/components/GlobalLoading';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -43,15 +44,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        if (!res.ok){
+        if (!res.ok) {
           throw new Error("Unexpected refresh failure");
-        } 
-        
+        }
+
         const data = await res.json();
         setAccessToken(data.token);
         setAccessTokenState(data.token);
         setUser(data.user);
-      } catch{
+      } catch {
         // user remains logged out
       } finally {
         setLoading(false);
@@ -72,7 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
       };
-      
+
       // Include Authorization header if we have a token
       if (accessToken) {
         headers['Authorization'] = `Bearer ${accessToken}`;
@@ -96,7 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider value={{ user, login, logout, accessToken }}>
-      {loading ? <div className='text-center text-xl md:text-4xl font-semibold text-gray-500 mt-20 md:mt-60 animate-pulse'>Loading...</div> : children}
+      {loading ? <GlobalLoading /> : children}
     </AuthContext.Provider>
   );
 }

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from '@/components/Providers';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ServerKeepAlive from "@/components/ServerKeepAlive";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,9 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
+          <ServerKeepAlive />
           {children}
-          <Footer/>
+          <Footer />
         </Providers>
       </body>
     </html>

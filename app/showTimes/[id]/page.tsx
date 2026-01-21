@@ -50,7 +50,7 @@ export default function ShowtimePage({ params }: PageProps) {
       } catch (err) {
         console.error("Failed to load data", err);
       } finally {
-        setTimeout(() => setLoading(false), 10000);
+        setLoading(false);
       }
     };
 

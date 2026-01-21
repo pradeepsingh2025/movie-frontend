@@ -18,6 +18,14 @@ export default function SignupPage() {
   const router = useRouter();
   const { login } = useAuth();
 
+  const phoneNumberRegister = register('phoneNumber', {
+    required: 'Phone is required',
+    pattern: {
+      value: /^\d+$/,
+      message: 'Phone number must contain only digits',
+    },
+  });
+
   async function onSubmit(data: SignupFormData) {
     try {
       // Signup endpoint according to API docs
@@ -71,7 +79,11 @@ export default function SignupPage() {
           </div>
           <div>
             <input
-              {...register('phoneNumber', { required: 'Phone is required' })}
+              {...phoneNumberRegister}
+              onChange={(e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+                phoneNumberRegister.onChange(e);
+              }}
               type="tel"
               placeholder="Phone Number"
               className="border p-2 w-full rounded"

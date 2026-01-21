@@ -222,7 +222,7 @@ export default function MovieDetail({ params }: PageProps) {
                 <button
                   onClick={() => handleBooking(show.id)}
                   disabled={show.status === 'FULL' || show.status === 'CANCELLED' || show.status === 'COMPLETED'}
-                  className={`w-full py-3 rounded-lg font-semibold transition-colors ${show.status === 'FULL'
+                  className={`w-full py-3 rounded-lg font-semibold transition-colors ${show.status === 'FULL' || show.status === 'CANCELLED' || show.status === 'COMPLETED'
                       ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                       : 'bg-red-500 hover:bg-red-600 text-white cursor-pointer'
                     }`}

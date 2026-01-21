@@ -27,7 +27,7 @@ export interface Movie {
   showTimes: ShowTime[];
 }
 
-export type ShowStatus = 'SCHEDULED' | 'CANCELLED' | 'FINISHED' | 'FILLING' | 'FULL';
+export type ShowStatus = 'SCHEDULED' | 'CANCELLED' | 'FINISHED' | 'FILLING' | 'FULL' | 'COMPLETED';
 
 
 export interface ShowTime {

@@ -5,6 +5,7 @@ import { Providers } from '@/components/Providers';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServerKeepAlive from "@/components/ServerKeepAlive";
+import ConditionalLayout from "@/components/ConditionalLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +33,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Header />
-          <ServerKeepAlive />
-          {children}
-          <Footer />
+          <ConditionalLayout header={<Header />} footer={<Footer />}>
+            <ServerKeepAlive />
+            {children}
+          </ConditionalLayout>
         </Providers>
       </body>
     </html>

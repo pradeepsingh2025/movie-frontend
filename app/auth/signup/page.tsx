@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { apiFetch } from '@/lib/apiClient';
 import { useAuth } from '@/lib/AuthContext';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 interface SignupFormData {
   email: string;
@@ -48,6 +49,9 @@ export default function SignupPage() {
   return (
     <div className="min-h-[90vh] flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+        <Link href="/" className="relative top-0 left-0">
+          <ArrowLeft className="w-6 h-6" />
+        </Link>
         <h1 className="text-2xl font-bold mb-6 text-center">Create Account</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>

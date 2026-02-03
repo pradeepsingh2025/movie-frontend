@@ -3,7 +3,6 @@ import { apiFetch } from '@/lib/apiClient';
 import { Movie, ShowTime } from '@/lib/types';
 import { use, useEffect, useState } from 'react';
 import { Play, Calendar, Clock, X } from 'lucide-react';
-import { form } from 'motion/react-m';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
 

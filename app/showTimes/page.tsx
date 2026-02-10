@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { ShowTime } from '@/lib/types';
 import { apiFetch } from '@/lib/apiClient';
 import ShowtimesList from './ShowTimeList';

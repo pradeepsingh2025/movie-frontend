@@ -1,6 +1,6 @@
 # Movie Ticket Booking System Frontend
 
-A modern, responsive web application for browsing movies, checking showtimes, and booking tickets. Built with Next.js 16 and Tailwind CSS 4, this frontend interfaces with a separate backend API to provide a seamless movie-going experience.
+A modern, responsive web application for browsing movies, checking showtimes, and booking tickets. Built with Next.js 16 and Tailwind CSS 4, this frontend interfaces with a separate JAVA backend API to provide a seamless movie-going experience.
 
 ## ✨ Key Features
 
@@ -8,7 +8,7 @@ A modern, responsive web application for browsing movies, checking showtimes, an
 - **🔍 Movie Details**: In-depth information about movies, including cast, plot, and duration.
 - **📅 Showtimes & Booking**: Select dates and showtimes for your favorite movies.
 - **💺 Interactive Seat Map**: Visual seat selection interface to pick your preferred spots.
-- **🔐 User Authentication**: Secure Login and Signup functionality using JWT/Supabase.
+- **🔐 User Authentication**: Secure Login and Signup functionality using JWT, access and refresh tokens.
 - **👤 User Dashboard**: Manage your bookings and view reservation history.
 - **📱 Responsive Design**: Fully optimized for desktop, tablet, and mobile devices.
 

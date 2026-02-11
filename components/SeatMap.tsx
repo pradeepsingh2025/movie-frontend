@@ -58,7 +58,7 @@ export default function SeatMap({ seats, selected, toggle, movie }: SeatMapProps
                 w-5 h-5 md:w-8 md:h-8
                 transition-colors duration-300
                 ${isSelected ? 'text-green-400 fill-green-400/20' : 'text-gray-500 hover:text-white'}
-                ${isInactive ? 'text-gray-800' : ''}
+                ${isInactive ? 'text-gray-700' : ''}
               `}
               strokeWidth={1.5}
             />

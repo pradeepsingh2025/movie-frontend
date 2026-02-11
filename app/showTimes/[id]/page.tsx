@@ -1,15 +1,15 @@
 // app/showTimes/[id]/page.tsx
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { use, useState } from 'react';
 import SeatMap from '@/components/SeatMap';
 import { apiFetch } from '@/lib/apiClient';
-import { Seat, ShowTime, User } from '@/lib/types';
-import { div } from 'motion/react-m';
+import { Seat, ShowTime } from '@/lib/types';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
 import { BookingSuccessModal } from '@/components/BookingSuccessModal';
 import BookingSkeleton from '@/components/BookingSkeleton';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface PageProps {
   params: Promise<{
@@ -18,47 +18,55 @@ interface PageProps {
 }
 
 export default function ShowtimePage({ params }: PageProps) {
-
   const { user } = useAuth();
-  const router = useRouter()
+  // const router = useRouter(); // router not used for redirecting anymore, handled by middleware or expected auth state, but kept if needed. actually user used it for auth redirect.
+  const router = useRouter();
 
   const { id } = use(params);
-  const [seats, setSeats] = useState<Seat[]>([]);
-  const [show, setShow] = useState<ShowTime>();
+  const queryClient = useQueryClient();
+
   const [selected, setSelected] = useState<number[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  useEffect(() => {
-    if (!user) {
-      const redirectTo = encodeURIComponent(window.location.pathname);
-      router.push(`/auth/login?redirect=${redirectTo}`);
+  // Redirect if not authenticated
+  if (!user && typeof window !== 'undefined') { // basic client-side check, ideally middleware
+    const redirectTo = encodeURIComponent(window.location.pathname);
+    router.push(`/auth/login?redirect=${redirectTo}`);
+  }
+
+  const { data: seats = [], isLoading: isLoadingSeats } = useQuery<Seat[]>({
+    queryKey: ['seats', id],
+    queryFn: () => apiFetch(`/api/showtimes/${id}/seats`, { method: 'GET' }),
+    enabled: !!id,
+  });
+
+  const { data: show, isLoading: isLoadingShow } = useQuery<ShowTime>({
+    queryKey: ['showtime', id],
+    queryFn: () => apiFetch(`/api/show-times/${id}`, { method: 'GET' }),
+    enabled: !!id,
+  });
+
+  const bookingMutation = useMutation({
+    mutationFn: async () => {
+      return apiFetch('/api/reservations', {
+        method: 'POST',
+        body: JSON.stringify({
+          show_time_id: id,
+          user_id: user?.id,
+          seatreservation_seats_id: selected,
+        }),
+      });
+    },
+    onSuccess: () => {
+      setShowSuccessModal(true);
+      setSelected([]);
+      queryClient.invalidateQueries({ queryKey: ['seats', id] });
+    },
+    onError: (error) => {
+      console.error("Failed to book seats", error);
+      // Optionally show an error toast here
     }
-  }, [user, router]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const [seatsData, showData] = await Promise.all([
-          apiFetch(`/api/showtimes/${id}/seats`, { method: 'GET' }),
-          apiFetch(`/api/show-times/${id}`, { method: 'GET' })
-        ]);
-
-        setSeats(seatsData);
-        setShow(showData);
-      } catch (err) {
-        console.error("Failed to load data", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchData();
-    }
-  }, [id]);
-
+  });
 
   function toggleSeat(seatId: number) {
     setSelected((prev) =>
@@ -68,24 +76,12 @@ export default function ShowtimePage({ params }: PageProps) {
     );
   }
 
-  async function book() {
-    if (selected.length === 0) return;
+  const handleBook = () => {
+    if (selected.length === 0 || !user) return;
+    bookingMutation.mutate();
+  };
 
-    try {
-      await apiFetch('/api/reservations', {
-        method: 'POST',
-        body: JSON.stringify({
-          show_time_id: id,
-          user_id: user?.id,
-          seatreservation_seats_id: selected,
-        }),
-      });
-      setShowSuccessModal(true);
-      setSelected([]);
-    } catch (error) {
-      console.error("Failed to book seats", error);
-    }
-  }
+  const loading = isLoadingSeats || isLoadingShow;
 
   return (
     // Dark Theme Container
@@ -124,16 +120,16 @@ export default function ShowtimePage({ params }: PageProps) {
 
           {/* Action Button */}
           <button
-            onClick={book}
-            disabled={selected.length === 0}
+            onClick={handleBook}
+            disabled={selected.length === 0 || bookingMutation.isPending}
             className={`
                     px-8 py-3 rounded-lg font-medium transition-all
-                    ${selected.length > 0
+                    ${selected.length > 0 && !bookingMutation.isPending
                 ? 'bg-green-500 hover:bg-green-400 text-black shadow-[0_0_20px_rgba(34,197,94,0.4)]'
                 : 'bg-neutral-700 text-neutral-500 cursor-not-allowed'}
                 `}
           >
-            Confirm Booking
+            {bookingMutation.isPending ? 'Booking...' : 'Confirm Booking'}
           </button>
         </div>
       </div>

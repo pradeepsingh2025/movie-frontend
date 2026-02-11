@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     restoreAuth();
   }, []);
 
-  function login(token: string, userData: User) {
+  async function login(token: string, userData: User) {
     setAccessToken(token);
     setAccessTokenState(token);
     setUser(userData);

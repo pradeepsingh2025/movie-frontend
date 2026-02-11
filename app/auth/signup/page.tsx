@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { apiFetch } from '@/lib/apiClient';
 import { useAuth } from '@/lib/AuthContext';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface SignupFormData {
   email: string;
@@ -18,6 +19,7 @@ export default function SignupPage() {
   const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>();
   const router = useRouter();
   const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const phoneNumberRegister = register('phoneNumber', {
     required: 'Phone is required',
@@ -29,6 +31,7 @@ export default function SignupPage() {
 
   async function onSubmit(data: SignupFormData) {
     try {
+      setLoading(true);
       // Signup endpoint according to API docs
       const result = await apiFetch('/api/auth/signup', {
         method: 'POST',
@@ -43,6 +46,8 @@ export default function SignupPage() {
     } catch (error: any) {
       console.error('Signup error:', error);
       // Global error modal will show the error
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -115,9 +120,9 @@ export default function SignupPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800"
+            className="w-full flex items-center justify-center bg-black text-white p-2 rounded hover:bg-gray-800"
           >
-            Sign Up
+            {loading ? <Loader2 className="animate-spin" /> : 'Sign Up'}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">

@@ -1,10 +1,11 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { useAuth } from '@/lib/AuthContext';
 import { apiFetch } from '@/lib/apiClient';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 interface LoginFormData {
@@ -17,9 +18,11 @@ export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(data: LoginFormData) {
     try {
+      setLoading(true);
       // POST request to /api/auth/login with JSON body: {"email":"...","password":"..."}
       const result = await apiFetch('/api/auth/login', {
         method: 'POST',
@@ -35,13 +38,15 @@ export default function LoginPage() {
       }
 
       if (result.accessToken && result.user) {
-        login(result.accessToken, result.user);
+        await login(result.accessToken, result.user);
         const redirect = params.get('redirect') || '/';
         router.replace(redirect);
       }
     } catch (error: any) {
       console.error('Login error:', error);
       // Global error modal will show the error
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -83,9 +88,9 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-black text-white p-2 rounded hover:bg-gray-800"
+            className="w-full flex items-center justify-center bg-black text-white p-2 rounded hover:bg-gray-800"
           >
-            Login
+            {loading ? <Loader2 className="animate-spin" /> : 'Login'}
           </button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">

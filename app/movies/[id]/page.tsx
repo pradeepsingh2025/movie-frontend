@@ -2,7 +2,7 @@
 import { apiFetch } from '@/lib/apiClient';
 import { Movie, ShowTime } from '@/lib/types';
 import { use, useEffect, useState } from 'react';
-import { Play, Calendar, Clock, X } from 'lucide-react';
+import { Play, Calendar, Clock, X, Loader2 } from 'lucide-react';
 
 const url = process.env.NEXT_PUBLIC_API_URL;
 
@@ -91,15 +91,15 @@ export default function MovieDetail({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-white text-xl flex items-center gap-2"><Loader2 className="animate-spin" /> Loading...</div>
       </div>
     );
   }
 
   if (!movie) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-white text-xl">Movie not found</div>
       </div>
     );

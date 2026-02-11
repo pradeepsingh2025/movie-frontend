@@ -12,11 +12,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ErrorProvider>
+      <ErrorProvider>
+        <AuthProvider>
           {children}
-        </ErrorProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </ErrorProvider>
     </QueryClientProvider>
   );
 }

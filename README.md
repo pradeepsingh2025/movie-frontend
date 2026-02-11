@@ -23,6 +23,10 @@ A modern, responsive web application for browsing movies, checking showtimes, an
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
 - **Forms**: React Hook Form + Zod validation.
 
+##  Backend Implementation
+
+This project interacts with a robust backend system. You can read more about the Java backend architecture and implementation details in this [blog post](https://blog.pradeepswork.space/lists/book-your-show-backend).
+
 ## 🚀 Getting Started
 
 ### Prerequisites

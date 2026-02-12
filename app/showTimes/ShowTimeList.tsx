@@ -31,14 +31,29 @@ export default function ShowtimesList({ initialShowtimes }: ShowtimesListProps) 
 
   // 1. Get unique dates for the filter tabs
   const uniqueDates = useMemo(() => {
-    const dates = new Set(initialShowtimes.map((s) => s.showDate));
-    return Array.from(dates).sort();
+  const dates = new Set(initialShowtimes.map((s) => s.showDate));
+  
+  // FIX: Filter out dates strictly before today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize to midnight
+
+  return Array.from(dates)
+  .filter((dateStr) => {
+  const showDate = new Date(dateStr + "T00:00:00");
+  showDate.setHours(0, 0, 0, 0);
+  return showDate >= today;
+  })
+
+      .sort();
   }, [initialShowtimes]);
 
   // Set default date to today (first available) if not set
+  useEffect(() => {
   if (!selectedDate && uniqueDates.length > 0) {
     setSelectedDate(uniqueDates[0]);
   }
+  }, [uniqueDates, selectedDate]);
+
 
   // 2. Filter and Group Data
   const groupedMovies = useMemo(() => {

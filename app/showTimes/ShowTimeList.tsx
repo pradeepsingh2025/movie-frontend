@@ -33,7 +33,7 @@ export default function ShowtimesList({ initialShowtimes }: ShowtimesListProps) 
   const uniqueDates = useMemo(() => {
   const dates = new Set(initialShowtimes.map((s) => s.showDate));
   
-  // ✅ FIX: Filter out dates strictly before today
+  // FIX: Filter out dates strictly before today
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize to midnight
 
@@ -63,7 +63,7 @@ export default function ShowtimesList({ initialShowtimes }: ShowtimesListProps) 
       const isDateMatch = show.showDate === selectedDate;
       return isScheduled && isDateMatch;
     });
-    
+
     // B. Group by Movie ID
     const groups: Record<number, { movie: Movie; halls: Record<number, { hallName: string; shows: ShowTime[] }> }> = {};
 

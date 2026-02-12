@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { ShowTime, Movie, Hall } from '@/lib/types';
+import { ShowTime, Movie} from '@/lib/types';
 
 // Helper to format ISO duration (PT2H30M -> 2h 30m)
 function formatDuration(isoDuration: string): string {

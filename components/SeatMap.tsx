@@ -38,38 +38,41 @@ export default function SeatMap({ seats, selected, toggle, movie }: SeatMapProps
   // Helper to render a single strip of seats
   const renderSeatStrip = (rowLabel: string) => (
     <div className="flex gap-1 md:gap-3 items-center">
-      {seatsByRow[rowLabel].map((seat) => {
-        const isSelected = selected.includes(seat.id);
-        const isInactive = seat.status === 'INACTIVE' || seat.status === 'DAMAGED';
+  {seatsByRow[rowLabel].map((seat) => {
+    const isSelected = selected.includes(seat.id);
+    // Major Fix: Disable interaction if the seat is inactive, damaged, OR already booked
+    const isUnavailable = seat.status === 'INACTIVE' || 
+                         seat.status === 'DAMAGED' || 
+                         seat.status === 'BOOKED';
 
-        return (
-          <button
-            key={seat.id}
-            disabled={isInactive}
-            onClick={() => toggle(seat.id)}
-            className={`
-              group relative flex flex-col items-center justify-center 
-              p-0.5 md:p-1 transition-all duration-200
-              ${isInactive ? 'opacity-30 cursor-not-allowed' : 'hover:-translate-y-1 cursor-pointer'}
-            `}
-          >
-            <Armchair
-              className={`
-                w-5 h-5 md:w-8 md:h-8
-                transition-colors duration-300
-                ${isSelected ? 'text-green-400 fill-green-400/20' : 'text-gray-500 hover:text-white'}
-                ${isInactive ? 'text-gray-700' : ''}
-              `}
-              strokeWidth={1.5}
-            />
+    return (
+      <button
+        key={seat.id}
+        disabled={isUnavailable}
+        onClick={() => toggle(seat.id)}
+        className={`
+          group relative flex flex-col items-center justify-center 
+          p-0.5 md:p-1 transition-all duration-200
+          ${isUnavailable ? 'opacity-30 cursor-not-allowed' : 'hover:-translate-y-1 cursor-pointer'}
+        `}
+      >
+        <Armchair
+          className={`
+            w-5 h-5 md:w-8 md:h-8
+            transition-colors duration-300
+            ${isSelected ? 'text-green-400 fill-green-400/20' : 'text-gray-500 hover:text-white'}
+            ${isUnavailable ? 'text-gray-700' : ''}
+          `}
+          strokeWidth={1.5}
+        />
 
-            {/* Tooltip */}
-            <span className="absolute -top-6 md:-top-8 left-1/2 -translate-x-1/2 text-[10px] md:text-xs bg-white text-black px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10 font-bold shadow-lg">
-              {seat.seat}
-            </span>
-          </button>
-        );
-      })}
+        {/* Tooltip */}
+        <span className="absolute -top-6 md:-top-8 left-1/2 -translate-x-1/2 text-[10px] md:text-xs bg-white text-black px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-10 font-bold shadow-lg">
+          {seat.seat}
+        </span>
+      </button>
+    );
+  })}
     </div>
   );
 

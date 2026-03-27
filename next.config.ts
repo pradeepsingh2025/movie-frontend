@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://book-movie-ticket-backend-production.up.railway.app/api/:path*",
+        destination: "https://vckkpg3jxx.ap-south-1.awsapprunner.com/api/:path*",
       },
     ];
   },

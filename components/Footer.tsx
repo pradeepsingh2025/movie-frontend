@@ -53,7 +53,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-gray-500 max-w-xs">
-              Your one-stop destination for discovering movies, exploring showtimes, and booking the perfect seats.
+              This is a demo project for discovering movies, exploring showtimes, and booking the perfect seats for you haha.
             </p>
           </div>
 
